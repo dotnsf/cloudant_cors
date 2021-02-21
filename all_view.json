@@ -1,0 +1,14 @@
+{
+  "language": "javascript",
+  "views": {
+    "all": {
+      "map": "function( doc ){ if( doc._id ){ emit( doc._id, { code: doc.code, prefecture: doc.prefecture, capital: doc.capital, lat: doc.geometry.coordinates[1], lng: doc.geometry.coordinates[0] } ); } }"
+    }
+  },
+  "lists": {
+    "all": "function( head, row ){ start( { 'headers': { 'content-type': 'text/html; charset=utf-8' } } ); send( '<ul>' ); var row; while( row = getRow() ){ var url = '../../_show/all/'; send( '<li><a href=\"' + url + row.id + '\">' + row.value.prefecture + '(' + row.value.capital + ')</a></li>' ); } send( '</ul>' ); }"
+  },
+  "shows": {
+    "all": "(function( doc, req ){ if( doc ){ return '<h2>' + doc.prefecture + '</h2>' + '<h3>' + doc.capital + '</h3><hr/>' + '緯度:' + doc.geometry.coordinates[1] + '<br/>' + '経度:' + doc.geometry.coordinates[0]; }else{ return 'empty'; } })"
+  }
+}

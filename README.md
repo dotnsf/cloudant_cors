@@ -23,7 +23,18 @@ CORS application sample for Cloudant.
 
 - Use bulk-insert API in curl to import `prefs.json`.
 
-    - `$ curl -u "username:password" -XPOST "https://xxxxx-bluemix.cloudantnosqldb.appdomain.cloud/mydb/_bulk_docs -H "Content-Type: application/json" -d @prefs.json`
+  - `$ curl -u "username:password" -XPOST "https://xxxxx-bluemix.cloudantnosqldb.appdomain.cloud/mydb/_bulk_docs -H "Content-Type: application/json" -d @prefs.json`
+
+
+## How to push View, List, and Show Design Document for "all" view
+
+- `$ curl -u "username:password" -XPUT "https://xxxxx-bluemix.cloudantnosqldb.appdomain.cloud/mydb/_design/all -H "Content-Type: application/json" -d @all_view.json`
+
+
+## How to access List Design Document for "all" view
+
+- `https://xxxxx-bluemix.cloudantnosqldb.appdomain.cloud/mydb/_design/all/_list/all/all`
+
 
 ## Licensing
 
