@@ -9,6 +9,6 @@
     "all": "function( head, row ){ start( { 'headers': { 'content-type': 'text/html; charset=utf-8' } } ); send( '<ul>' ); var row; while( row = getRow() ){ var url = '../../_show/all/'; send( '<li><a href=\"' + url + row.id + '\">' + row.value.prefecture + '(' + row.value.capital + ')</a></li>' ); } send( '</ul>' ); }"
   },
   "shows": {
-    "all": "(function( doc, req ){ if( doc ){ return '<h2>' + doc.prefecture + '</h2>' + '<h3>' + doc.capital + '</h3><hr/>' + '緯度:' + doc.geometry.coordinates[1] + '<br/>' + '経度:' + doc.geometry.coordinates[0]; }else{ return 'empty'; } })"
+    "all": "(function( doc, req ){ if( doc ){ return '<script src=\"https://code.jquery.com/jquery-2.2.4.min.js\"></script> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css\" /> <script src=\"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js\"></script> <script> $(function(){ var lat = ' + doc.geometry.coordinates[1] + '; var lng = ' + doc.geometry.coordinates[0] + '; var map = L.map( \"demoMap\", {} ).setView( [ lat, lng ], 9 ); L.tileLayer( \"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png\", { attribution: \"Map data @ OpenStreetMap\" } ).addTo( map ); }); </script> <style> #demoMap{ position: fixed; width: 60%; height: 30%; } </style> <h2>' + doc.prefecture + '</h2>' + '<h3>' + doc.capital + '</h3><hr/>' + '緯度:' + doc.geometry.coordinates[1] + '<br/>' + '経度:' + doc.geometry.coordinates[0] + '<hr/><div><div id=\"demoMap\"></div></div>'; }else{ return 'empty'; } })"
   }
 }
