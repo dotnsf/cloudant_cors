@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="apple-mobile-web-app-title" content="Cloudant CORS"/>
+
+<title>Cloudant CORS</title>
+
+<style>
+</style>
+<script>
+function refresh_table(){
+  var hostname = $('#hostname').val();
+  var username = $('#username').val();
+  var password = $('#password').val();
+  if( username && password ){
+    $('#tbody').html( '' );
+    $.ajax({
+      url: 'https://' + hostname + '/mydb/_all_docs?include_docs=true',
+      type: 'GET',
+      beforeSend: function( xhr ){
+        xhr.setRequestHeader( "Authorization", "Basic " + btoa( username + ":" + password ) );
+      },
+      success: function( result ){
+        console.log( result );
+        if( result.rows && result.rows.length > 0 ){
+          var docs = [];
+          for( var i = 0; i < result.rows.length; i ++ ){
+            if( !result.rows[i].doc._id.startsWith( '_' ) ){
+              docs.push( result.rows[i].doc );
+            }
+          }
+
+          docs.sort( sortByCode );
+          for( var i = 0; i < docs.length; i ++ ){
+            var doc = docs[i];
+            var tr = '<tr>'
+              + '<td>' + doc.code + '</td>'
+              + '<td>' + doc.prefecture + '</td>'
+              + '<td>' + doc.capital + '</td>'
+              + '<td>' + doc.geometry.coordinates[1] + '</td>'
+              + '<td>' + doc.geometry.coordinates[0] + '</td>'
+              + '</tr>';
+            $('#tbody').append( tr );
+          }
+        }
+      },
+      error: function( e0, e1, e2 ){
+        console.log( e0, e1, e2 );
+      }
+    });
+  }
+}
+
+function sortByCode( a, b ){
+  var r = 0;
+  if( a.code < b.code ){
+    r = -1;
+  }else if( a.code > b.code ){
+    r = 1;
+  }
+
+  return r;
+}
+</script>
+
+<body>
+
+<div class="container">
+  <input type="text" id="hostname" placeholder="hostname" style="width: 600px;" value="-bluemix.cloudantnosqldb.appdomain.cloud"/><br/>
+  <input type="text" id="username" placeholder="username" style="width: 300px;" value=""/>
+  <input type="password" id="password" placeholder="password" style="width: 300px;" value=""/>
+  <button class="btn btn-primary" onClick="refresh_table();">Refresh</button>
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>#</th><th>prefecture</th><th>capital</th><th>lat</th><th>lng</th></tr>
+    </thead>
+    <tbody id="tbody">
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
