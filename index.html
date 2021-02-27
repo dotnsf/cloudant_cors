@@ -21,7 +21,8 @@ function refresh_table(){
   var hostname = $('#hostname').val();
   var username = $('#username').val();
   var password = $('#password').val();
-  if( username && password ){
+  var db = $('#db').val();
+  if( hostname && username && password && db ){
     $('#tbody').html( '' );
     $.ajax({
       url: 'https://' + hostname + '/mydb/_all_docs?include_docs=true',
@@ -76,8 +77,9 @@ function sortByCode( a, b ){
 
 <div class="container">
   <input type="text" id="hostname" placeholder="hostname" style="width: 600px;" value="-bluemix.cloudantnosqldb.appdomain.cloud"/><br/>
-  <input type="text" id="username" placeholder="username" style="width: 300px;" value=""/>
-  <input type="password" id="password" placeholder="password" style="width: 300px;" value=""/>
+  <input type="text" id="db" placeholder="db" style="width: 200px;" value="mydb"/>
+  <input type="text" id="username" placeholder="username" style="width: 200px;" value=""/>
+  <input type="password" id="password" placeholder="password" style="width: 200px;" value=""/>
   <button class="btn btn-primary" onClick="refresh_table();">Refresh</button>
   <table class="table table-bordered">
     <thead>
