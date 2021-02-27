@@ -28,7 +28,7 @@ function create_doc(){
       url: 'https://' + hostname + '/' + db + '/' + id,
       type: 'PUT',
       data: JSON.stringify( { name: 'きむら', timestamp: ( new Date() ).getTime() } ),
-      dataType: 'json',
+      //dataType: 'json',
       beforeSend: function( xhr ){
         xhr.setRequestHeader( "Authorization", "Basic " + btoa( username + ":" + password ) );
       },
