@@ -27,7 +27,8 @@ function create_doc(){
     $.ajax({
       url: 'https://' + hostname + '/' + db + '/' + id,
       type: 'PUT',
-      data: { 'name': 'きむら', 'timestamp': ( new Date() ).getTime() },
+      data: JSON.stringify( { name: 'きむら', timestamp: ( new Date() ).getTime() } ),
+      dataType: 'json',
       beforeSend: function( xhr ){
         xhr.setRequestHeader( "Authorization", "Basic " + btoa( username + ":" + password ) );
       },
