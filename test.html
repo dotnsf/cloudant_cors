@@ -27,7 +27,7 @@ function create_doc(){
     $.ajax({
       url: 'https://' + hostname + '/' + db + '/' + id,
       type: 'PUT',
-      data: { name: 'きむら', timestamp: ( new Date() ).getTime() },
+      data: { 'name': 'きむら', 'timestamp': ( new Date() ).getTime() },
       beforeSend: function( xhr ){
         xhr.setRequestHeader( "Authorization", "Basic " + btoa( username + ":" + password ) );
       },
@@ -53,7 +53,7 @@ function generateId(){
 
 <div class="container">
   <input type="text" id="hostname" placeholder="hostname" style="width: 600px;" value="-bluemix.cloudantnosqldb.appdomain.cloud"/><br/>
-  <input type="text" id="db" placeholder="db" style="width: 200px;" value="mydb"/>
+  <input type="text" id="db" placeholder="db" style="width: 200px;" value="testdb"/>
   <input type="text" id="username" placeholder="username" style="width: 200px;" value=""/>
   <input type="password" id="password" placeholder="password" style="width: 200px;" value=""/>
   <button class="btn btn-primary" onClick="create_doc();">Create</button>
