@@ -10,49 +10,29 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-<meta name="apple-mobile-web-app-title" content="Cloudant CORS"/>
+<meta name="apple-mobile-web-app-title" content="Cloudant CORS test"/>
 
-<title>Cloudant CORS</title>
+<title>Cloudant CORS test</title>
 
 <style>
 </style>
 <script>
-function refresh_table(){
+function create_doc(){
   var hostname = $('#hostname').val();
   var username = $('#username').val();
   var password = $('#password').val();
   var db = $('#db').val();
   if( hostname && username && password && db ){
-    $('#tbody').html( '' );
+    var id = generateId();
     $.ajax({
-      url: 'https://' + hostname + '/' + db + '/_all_docs?include_docs=true',
-      type: 'GET',
+      url: 'https://' + hostname + '/' + db + '/' + id,
+      type: 'PUT',
+      data: { name: 'きむら', timestamp: ( new Date() ).getTime() },
       beforeSend: function( xhr ){
         xhr.setRequestHeader( "Authorization", "Basic " + btoa( username + ":" + password ) );
       },
       success: function( result ){
         console.log( result );
-        if( result.rows && result.rows.length > 0 ){
-          var docs = [];
-          for( var i = 0; i < result.rows.length; i ++ ){
-            if( !result.rows[i].doc._id.startsWith( '_' ) ){
-              docs.push( result.rows[i].doc );
-            }
-          }
-
-          docs.sort( sortByCode );
-          for( var i = 0; i < docs.length; i ++ ){
-            var doc = docs[i];
-            var tr = '<tr>'
-              + '<td>' + doc.code + '</td>'
-              + '<td>' + doc.prefecture + '</td>'
-              + '<td>' + doc.capital + '</td>'
-              + '<td>' + doc.geometry.coordinates[1] + '</td>'
-              + '<td>' + doc.geometry.coordinates[0] + '</td>'
-              + '</tr>';
-            $('#tbody').append( tr );
-          }
-        }
       },
       error: function( e0, e1, e2 ){
         console.log( e0, e1, e2 );
@@ -61,15 +41,11 @@ function refresh_table(){
   }
 }
 
-function sortByCode( a, b ){
-  var r = 0;
-  if( a.code < b.code ){
-    r = -1;
-  }else if( a.code > b.code ){
-    r = 1;
-  }
+function generateId(){
+  var s = 1000;
+  var id = '' + ( new Date().getTime().toString(16) ) + Math.floor( s * Math.random() ).toString(16);
 
-  return r;
+  return id;
 }
 </script>
 
@@ -80,14 +56,7 @@ function sortByCode( a, b ){
   <input type="text" id="db" placeholder="db" style="width: 200px;" value="mydb"/>
   <input type="text" id="username" placeholder="username" style="width: 200px;" value=""/>
   <input type="password" id="password" placeholder="password" style="width: 200px;" value=""/>
-  <button class="btn btn-primary" onClick="refresh_table();">Refresh</button>
-  <table class="table table-bordered">
-    <thead>
-      <tr><th>#</th><th>prefecture</th><th>capital</th><th>lat</th><th>lng</th></tr>
-    </thead>
-    <tbody id="tbody">
-    </tbody>
-  </table>
+  <button class="btn btn-primary" onClick="create_doc();">Create</button>
 </div>
 
 </body>
